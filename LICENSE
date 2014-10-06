@@ -1,5 +1,13 @@
-The MIT License (MIT)
+Most files here are Emacs modes that are written by other people and are
+copyright of their respective authors.
 
+The code I've written myself is licensed under the MIT license shown below.
+
+See individual files for details.
+
+---------------------------------------------------------------------------
+
+Jared's Emacs Configuration
 Copyright (c) 2014 Jared Davis
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
