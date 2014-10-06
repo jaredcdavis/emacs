@@ -411,3 +411,7 @@ This works on the current region."
 ;; do not make me type "yes" sometimes, because switching between "y"
 ;; and "yes" is horrible and unintuitive
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+
+(instaswitch-to-shell)
+(delete-other-windows)
