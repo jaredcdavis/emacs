@@ -30,4 +30,14 @@ An example:
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(default ((t (:inherit (default default) :stipple nil :background "#000059" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 117 :width normal :foundry "unknown" :family "Inconsolata")))))
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(js2-bounce-indent-p t)
+ '(js2-mode-escape-quotes nil)
+ '(safe-local-variable-values (quote ((syntax . COMMON-LISP) (Package . "CCL") (Package X86 :use CL) (Package X8664 :use CL) (Package X8632 :use CL) (Package CCL :use CL) (Package PPC :use CL) (Package ARM :use CL) (Package CHUD (:USE CL CCL)) (auto-fill . t) (Package . CCL)))))
+
 ```
