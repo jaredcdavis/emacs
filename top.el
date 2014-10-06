@@ -13,6 +13,9 @@
 
 (add-to-list 'load-path "emacs")
 
+(when *at-centaur*
+  (load "~/emacs/ssh.el"))
+
 (load "~/emacs/haml-mode.el")
 (load "~/emacs/emacs-acl2.el")
 (load "~/emacs/jared.el")

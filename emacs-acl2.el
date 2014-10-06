@@ -1,3 +1,6 @@
+;; Originally distributed with ACL2.
+;; Modified by Jared Davis
+
 ; Attempt to set *acl2-sources-dir*.
 (if (and (not (boundp '*acl2-sources-dir*))
 	 (file-name-absolute-p load-file-name))
@@ -33,27 +36,37 @@
 
 ; Start up a shell.  This also loads in comint-mode, used below.
 
-(shell)
+(if *at-centaur*
+    (ssh "hpc0" "*shell*")
+  (shell))
+
 (ansi-color-for-comint-mode-on)
 (font-lock-mode 0)
 
 
 ; Do meta-x new-shell to start a new shell.
 (defvar number-of-other-sshs 0)
-(defvar ssh-target "fv-hpc")
+(defvar ssh-target "hpc0")
 
 (defun new-shell ()
   "Start up another shell."
   (interactive)
-  (let ((bufname (concat "*shell-" 
-			 (number-to-string
-			  (setq number-of-other-sshs
-				(+ 1 number-of-other-sshs)))
-			 "*")))
-    (switch-to-buffer
-     (make-comint bufname (or (getenv "SHELL")
-			      "bash")))
-    (shell-mode)))
+  (if *at-centaur*
+      (let ((bufname (concat "*shell-"
+			     (number-to-string
+			      (setq number-of-other-sshs
+				    (+ 1 number-of-other-sshs)))
+			     "*")))
+	(ssh ssh-target bufname)
+	(font-lock-mode 0))
+    (let ((bufname (concat "shell-"
+			   (number-to-string
+			    (setq number-of-other-sshs
+				  (+ 1 number-of-other-sshs))))))
+      (switch-to-buffer
+       (make-comint bufname (or (getenv "SHELL")
+				"bash")))
+      (shell-mode))))
 
 ; Avoid killing shell buffers by accident:
 (defun kill-buffer-without-process (name)

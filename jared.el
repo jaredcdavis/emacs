@@ -13,6 +13,7 @@
 (if (equal (substring (emacs-version) 0 3) "GNU")
     (menu-bar-mode 0))
 
+; This is no longer in Emacs 24, I guess.
 ;(if (equal (substring (emacs-version) 0 3) "GNU")
 ;    (pc-selection-mode))
 
@@ -301,6 +302,41 @@
     ("d" "(disassemble ")
     ("d$" "(disassemble$ ")
 
+    ("xa"    "/share/apps/fv/jared/xa/cn")
+    ("xae"   "/share/apps/fv/jared/xa/cn/e")
+    ("xab"   "/share/apps/fv/jared/xa/cn/e/acl2/books")
+    ("xabc"  "/share/apps/fv/jared/xa/cn/e/acl2/books/centaur")
+    ("xac"   "/share/apps/fv/jared/xa/cn/e/cbooks")
+    ("xap"   "/share/apps/fv/jared/xa/cn/proofs")
+
+    ("xb"    "/share/apps/fv/jared/xb/cn")
+    ("xbe"   "/share/apps/fv/jared/xb/cn/e")
+    ("xbb"   "/share/apps/fv/jared/xb/cn/e/acl2/books")
+    ("xbbc"  "/share/apps/fv/jared/xb/cn/e/acl2/books/centaur")
+    ("xbc"   "/share/apps/fv/jared/xb/cn/e/cbooks")
+    ("xbp"   "/share/apps/fv/jared/xb/cn/proofs")
+
+    ("xc"    "/share/apps/fv/jared/xc/cn")
+    ("xce"   "/share/apps/fv/jared/xc/cn/e")
+    ("xcb"   "/share/apps/fv/jared/xc/cn/e/acl2/books")
+    ("xcbc"  "/share/apps/fv/jared/xc/cn/e/acl2/books/centaur")
+    ("xcc"   "/share/apps/fv/jared/xc/cn/e/cbooks")
+    ("xcp"   "/share/apps/fv/jared/xc/cn/proofs")
+
+    ("xd"    "/share/apps/fv/jared/xd/cn")
+    ("xde"   "/share/apps/fv/jared/xd/cn/e")
+    ("xdb"   "/share/apps/fv/jared/xd/cn/e/acl2/books")
+    ("xdbc"  "/share/apps/fv/jared/xd/cn/e/acl2/books/centaur")
+    ("xdc"   "/share/apps/fv/jared/xd/cn/e/cbooks")
+    ("xdp"   "/share/apps/fv/jared/xd/cn/proofs")
+
+    ("xp"    "/n/fv2/jared/xp/cn")
+    ("xpe"   "/n/fv2/jared/xp/cn/e")
+    ("xpab"  "/n/fv2/jared/xp/cn/e/acl2/books")
+    ("xpabc" "/n/fv2/jared/xp/cn/e/acl2/books/cexbtaur")
+    ("xpc"   "/n/fv2/jared/xp/cn/e/cbooks")
+    ("xpp"   "/n/fv2/jared/xp/cn/proofs")
+
     ))
 
 (global-set-key (kbd "C-'") 'expand-abbrev)
@@ -328,6 +364,10 @@
 ;; Ctrl+] will instaswitch to the *shell* buffer.
 (global-set-key (kbd "C-]") 'instaswitch-to-shell)
 
+;; Ctrl+\ will also instaswitch to the *shell* buffer, because otherwise
+;; I hit it by accident when I'm trying to hit C-], and it prompts me to
+;; enter an "input method", which is really irritating.
+(global-set-key (kbd "C-\\") 'instaswitch-to-shell)
 
 (global-set-key (kbd "C-x C-]") 'switch-to-buffer)
 
@@ -349,8 +389,6 @@
 (ido-mode t)
 
 
-
-
 (global-set-key (kbd "C-e") 'end-of-line)
 
 (global-set-key (kbd "C-t k") 'join-line)
@@ -369,6 +407,8 @@
   (set-face-foreground 'font-lock-keyword-face "Aquamarine")
   (set-face-foreground 'font-lock-function-name-face "Violet")
   (set-face-foreground 'font-lock-string-face "LightPink")
+  (set-face-foreground 'font-lock-type-face "#aaddff")
+  (set-face-foreground 'font-lock-variable-name-face "#aaffaa")
   (setq ansi-color-names-vector
     ["black" "red" "#90ff90" "yellow" "#9090ff" "magenta" "cyan" "white"])
   (setq ansi-color-map (ansi-color-make-color-map)))
@@ -383,6 +423,8 @@
   (set-face-foreground 'font-lock-function-name-face "#ff90ff")
   (set-face-foreground 'font-lock-string-face "#ffc090")
   (set-face-foreground 'font-lock-builtin-face "#ffff00")
+  (set-face-foreground 'font-lock-type-face "#aaccff")
+  (set-face-foreground 'font-lock-variable-name-face "#ffff99")
   (setq ansi-color-names-vector
     ["black" "red" "#90ff90" "yellow" "#9090ff" "magenta" "cyan" "white"])
   (setq ansi-color-map (ansi-color-make-color-map)))
@@ -397,6 +439,8 @@
   (set-face-foreground 'font-lock-keyword-face "DarkGreen")
   (set-face-foreground 'font-lock-function-name-face "DarkViolet")
   (set-face-foreground 'font-lock-string-face "DarkRed")
+  (set-face-foreground 'font-lock-type-face "#003399")
+  (set-face-foreground 'font-lock-variable-name-face "#990066")
   (setq ansi-color-names-vector
     ["black" "red" "#009000" "yellow" "#000090" "magenta" "cyan" "white"])
   (setq ansi-color-map (ansi-color-make-color-map)))
@@ -412,6 +456,8 @@
   (set-face-foreground 'font-lock-keyword-face "Purple3")
   (set-face-foreground 'font-lock-function-name-face "DarkRed")
   (set-face-foreground 'font-lock-string-face "Red3")
+  (set-face-foreground 'font-lock-type-face "#003399")
+  (set-face-foreground 'font-lock-variable-name-face "#990066")
   (setq ansi-color-names-vector
     ["black" "red" "#009000" "yellow" "#000090" "magenta" "cyan" "white"])
   (setq ansi-color-map (ansi-color-make-color-map)))
@@ -538,7 +584,7 @@
 (put 'when-have-feature 'lisp-indent-function 'defun)
 (put 'aig-cases 'lisp-indent-function 'defun)
 (put 'getopt::defoptions 'lisp-indent-function 'defun)
-
+(put 'hunchentoot:define-easy-handler 'lisp-indent-function 'defun)
 
 
 

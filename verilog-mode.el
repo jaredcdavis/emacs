@@ -1,5 +1,7 @@
 ;; verilog-mode.el --- major mode for editing verilog source in Emacs
 
+; Modified by Jared Davis to tweak indentation to my liking.
+
 ;; Copyright (C) 1996-2012  Free Software Foundation, Inc.
 
 ;; Author: Michael McNamara (mac@verilog.com),
@@ -565,7 +567,7 @@ If non nil, treat as:
   :type 'boolean)
 (put 'verilog-indent-declaration-macros 'safe-local-variable 'verilog-booleanp)
 
-(defcustom verilog-indent-lists t
+(defcustom verilog-indent-lists nil
   "How to treat indenting items in a list.
 If t (the default), indent as:
 	always @( posedge a or
@@ -592,7 +594,7 @@ Set to 0 to have all directives start at the left side of the screen."
   :type 'integer)
 (put 'verilog-indent-level-directive 'safe-local-variable 'integerp)
 
-(defcustom verilog-cexp-indent 2
+(defcustom verilog-cexp-indent 0
   "Indentation of Verilog statements split across lines."
   :group 'verilog-mode-indent
   :type 'integer)
@@ -610,7 +612,7 @@ Set to 0 to have all directives start at the left side of the screen."
   :type 'boolean)
 (put 'verilog-auto-newline 'safe-local-variable 'verilog-booleanp)
 
-(defcustom verilog-auto-indent-on-newline t
+(defcustom verilog-auto-indent-on-newline nil
   "Non-nil means automatically indent line after newline."
   :group 'verilog-mode-indent
   :type 'boolean)
