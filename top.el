@@ -46,6 +46,7 @@
 
 
 (add-to-list 'auto-mode-alist '("\\.v\\'" . verilog-mode))
+(add-to-list 'auto-mode-alist '("\\.iospec\\'" . verilog-mode))
 (add-to-list 'auto-mode-alist '("\\.acl2\\'" . lisp-mode))
 (add-to-list 'auto-mode-alist '("\\.\\(asm\\|nasm\\|s\\)$" . nasm-mode))
 
@@ -129,26 +130,6 @@
 
 (setq ido-default-file-method 'selected-window)
 (setq ido-default-buffer-method 'selected-window)
-
-
-
-
-
-; HOL stuff.
-
-; (pp load-path)
-
-;(setq load-path (append load-path '("/n/fv2/jared/hol/sml-mode-4.1/")))
-
-;(add-to-list 'load-path "/n/fv2/jared/hol/sml-mode-4.1")
-;(autoload 'sml-mode "sml-mode" "Major mode for editing SML." t)
-;(load "/n/fv2/jared/hol/sml-mode-4.1/sml-mode")
-;(load "/n/fv2/jared/hol/HOL/tools/hol-mode")
-
-
-
-
-
 
 
 ;; Ido-mode redefines C-x C-f to be fancy, but it's slow on big directories.
@@ -318,9 +299,11 @@ This works on the current region."
 
 
 (global-set-key (kbd "C-c h")   'hs-hide-block)
-(global-set-key (kbd "C-c C-h") 'hs-hide-all)
+(global-set-key (kbd "C-c C-h") 'hs-hide-block)
+(global-set-key (kbd "C-c C-M-h") 'hs-hide-all)
 (global-set-key (kbd "C-c s")   'hs-show-block)
-(global-set-key (kbd "C-c C-s") 'hs-show-all)
+(global-set-key (kbd "C-c C-s") 'hs-show-block)
+(global-set-key (kbd "C-c C-M-s") 'hs-show-all)
 
 
 (add-hook 'haml-mode-hook
@@ -354,3 +337,74 @@ This works on the current region."
 (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
 ;(setq show-paren-delay 0)
 
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+
+(setq ido-max-directory-size 100000)
+
+
+
+
+
+(defun my-lisp-indent-function (indent-point state)
+  (let ((normal-indent (current-column)))
+   (goto-char (1+ (elt state 1)))
+   (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
+   (if (and (elt state 2)
+	    (not (looking-at "\\sw\\|\\s_")))
+       ;; car of form doesn't seem to be a symbol
+       (progn
+	 (if (not (> (save-excursion (forward-line 1) (point))
+		     calculate-lisp-indent-last-sexp))
+	     (progn (goto-char calculate-lisp-indent-last-sexp)
+		    (beginning-of-line)
+		    (parse-partial-sexp (point)
+					calculate-lisp-indent-last-sexp 0 t)))
+	 ;; Indent under the list or under the first sexp on the same
+	 ;; line as calculate-lisp-indent-last-sexp.  Note that first
+	 ;; thing on that line has to be complete sexp since we are
+	 ;; inside the innermost containing sexp.
+	 (backward-prefix-chars)
+	 (current-column))
+     (let ((function (buffer-substring (point)
+				       (progn (forward-sexp 1) (point))))
+	   method)
+       (setq method (or (get (intern-soft function) 'lisp-indent-function)
+			(get (intern-soft function) 'lisp-indent-hook)))
+       (cond
+	((string-match "\\`:" function)
+	 ;; If the first element is a keyword, then indent subsequent
+	 ;; elements only to the current column.
+	 (let ((containing-form-start (elt state 1)))
+	   ;; this is the location of the "(" behind the starting keyword symbol
+	   (goto-char containing-form-start)
+	   ;; after the "("
+	   (forward-char 1)
+	   ;; after the first symbol
+	   (forward-sexp 1)
+	   ;; start of the first symbol
+	   (backward-sexp 1)
+	   (current-column)))
+
+	((or (eq method 'defun)
+	     (and (null method)
+		  (> (length function) 3)
+		  ;; match things beginning with def or with in any package
+		  ;; \` means beginning, \' means end.
+		  (or (string-match "\\(\\`\\|::\\)def" function)
+		      (string-match "\\(\\`\\|::\\)with" function)
+		      (string-match "\\(\\`\\|::\\)case" function)
+		      (string-match "case\\'" function))))
+	 (lisp-indent-defform state indent-point))
+	((integerp method)
+	 (lisp-indent-specform method state
+			       indent-point normal-indent))
+	(method
+	 (funcall method indent-point state)))))))
+
+(setq lisp-indent-function 'my-lisp-indent-function)
+
+;; do not make me type "yes" sometimes, because switching between "y"
+;; and "yes" is horrible and unintuitive
+(defalias 'yes-or-no-p 'y-or-n-p)
