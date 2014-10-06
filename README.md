@@ -13,12 +13,14 @@ I clone this repository into `~/emacs`.
 
 My actual `.emacs` file sets up just a few things that vary from
 computer to computer, e.g., paths for ACL2 doc stuff, fonts, etc.
+
 An example:
 
 ```
 (defvar *acl2-sources-dir* "~/acl2/")
 (load "~/acl2/books/xdoc/xdoc.el")
 
+(defvar *at-centaur* nil) ;; should be NIL unless I'm at Centaur
 (load "~/emacs/top.el")
 
 (ignore-errors (visit-tags-table "~/acl2/TAGS"))
@@ -39,5 +41,4 @@ An example:
  '(js2-bounce-indent-p t)
  '(js2-mode-escape-quotes nil)
  '(safe-local-variable-values (quote ((syntax . COMMON-LISP) (Package . "CCL") (Package X86 :use CL) (Package X8664 :use CL) (Package X8632 :use CL) (Package CCL :use CL) (Package PPC :use CL) (Package ARM :use CL) (Package CHUD (:USE CL CCL)) (auto-fill . t) (Package . CCL)))))
-
 ```
