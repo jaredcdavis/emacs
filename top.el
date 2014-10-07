@@ -415,3 +415,5 @@ This works on the current region."
 
 (instaswitch-to-shell)
 (delete-other-windows)
+
+(delete-selection-mode 1)
