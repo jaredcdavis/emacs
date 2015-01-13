@@ -417,3 +417,40 @@ This works on the current region."
 (delete-other-windows)
 
 (delete-selection-mode 1)
+
+(setq x-select-enable-clipboard t)
+(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
+
+
+(defun find-first-non-ascii-char ()
+  "Find the first non-ascii character from point onwards."
+  (interactive)
+  (let (point)
+    (save-excursion
+      (setq point
+            (catch 'non-ascii
+              (while (not (eobp))
+                (or (eq (char-charset (following-char))
+                        'ascii)
+                    (throw 'non-ascii (point)))
+                (forward-char 1)))))
+    (if point
+        (goto-char point)
+        (message "No non-ascii characters."))))
+
+
+(defun fix-copypaste-badness ()
+  "Fix problems with copy/pasted text from the shell.  Sometimes
+   the copy/pasted text has text properties that get copied along
+   with it that prevent movement commands from working.  This
+   removes bad properties for all text in the buffer.  It might
+   remove properties that aren't really a problem but whatever."
+  (interactive)
+  (let ((start (point-min))
+        (end   (point-max)))
+    (remove-list-of-text-properties start end
+                                    '(field
+                                      front-sticky
+                                      inhibit-line-move-field-capture
+                                      rear-nonsticky))))
