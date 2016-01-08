@@ -21,6 +21,7 @@
 (load "~/emacs/jared.el")
 (load "~/emacs/verilog-mode.el")
 (load "~/emacs/nasm-mode.el")
+(load "~/emacs/scss-mode.el")
 
 (setq verilog-auto-endcomments    nil)
 (setq verilog-indent-level        2)
@@ -419,10 +420,10 @@ This works on the current region."
 
 (delete-selection-mode 1)
 
-(setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
-
-
+(unless (string-equal system-type "windows-nt")
+  (setq x-select-enable-primary t)
+  (setq x-select-enable-clipboard t)
+  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
 (defun find-first-non-ascii-char ()
   "Find the first non-ascii character from point onwards."
