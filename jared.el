@@ -330,12 +330,26 @@
     ("xdc"   "/share/apps/fv/jared/xd/cn/e/cbooks")
     ("xdp"   "/share/apps/fv/jared/xd/cn/proofs")
 
+    ("xg"    "/share/apps/fv/jared/xg/cn")
+    ("xge"   "/share/apps/fv/jared/xg/cn/e")
+    ("xgb"   "/share/apps/fv/jared/xg/cn/e/acl2/books")
+    ("xgbc"  "/share/apps/fv/jared/xg/cn/e/acl2/books/centaur")
+    ("xgc"   "/share/apps/fv/jared/xg/cn/e/cbooks")
+    ("xgp"   "/share/apps/fv/jared/xg/cn/proofs")
+
     ("xp"    "/n/fv2/jared/xp/cn")
     ("xpe"   "/n/fv2/jared/xp/cn/e")
     ("xpab"  "/n/fv2/jared/xp/cn/e/acl2/books")
     ("xpabc" "/n/fv2/jared/xp/cn/e/acl2/books/cexbtaur")
     ("xpc"   "/n/fv2/jared/xp/cn/e/cbooks")
     ("xpp"   "/n/fv2/jared/xp/cn/proofs")
+
+    ("xcm"    "/share/apps/fv/jared/xcm/cn")
+    ("xcme"   "/share/apps/fv/jared/xcm/cn/e")
+    ("xcmb"   "/share/apps/fv/jared/xcm/cn/e/acl2/books")
+    ("xcmbc"  "/share/apps/fv/jared/xcm/cn/e/acl2/books/centaur")
+    ("xcmc"   "/share/apps/fv/jared/xcm/cn/e/cbooks")
+    ("xcmp"   "/share/apps/fv/jared/xcm/cn/proofs")
 
     ))
 
@@ -399,7 +413,7 @@
 
 (defun pretty ()
   (interactive)
-  (set-background-color "#000059")
+  (set-background-color "#000049")
   (set-foreground-color "white")
   (set-cursor-color "yellow")
   (set-face-foreground 'font-lock-comment-face "LightSkyBlue2")
@@ -459,7 +473,7 @@
   (set-face-foreground 'font-lock-type-face "#003399")
   (set-face-foreground 'font-lock-variable-name-face "#990066")
   (setq ansi-color-names-vector
-    ["black" "red" "#009000" "yellow" "#000090" "magenta" "cyan" "white"])
+    ["black" "red" "#009000" "#907000" "#000090" "magenta" "cyan" "white"])
   (setq ansi-color-map (ansi-color-make-color-map)))
 
 
@@ -500,12 +514,17 @@
 
 (if (equal window-system 'x)
     (add-hook 'c-mode-hook '(lambda ()
+			      (c-set-style "bsd")
 			      (font-lock-mode 1)
 			      (column-number-mode t)
-			      (abbrev-mode 0)
+			      (setq comment-start "// ")
+			      (setq comment-end   "")
+			      (setq indent-tabs-mode nil)
+			      (c-set-offset 'comment-intro 0)
 			      (setq c-basic-offset 4)
-			      (setq c-indent-level 4)
-			      (c-set-style "stroustrup"))))
+			      (setq tab-width 4)
+			      (abbrev-mode 0)  ;; it does crazy things
+			      )))
 
 (if (equal window-system 'x)
     (add-hook 'c++-mode-hook '(lambda ()
