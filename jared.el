@@ -411,9 +411,19 @@
 (auto-fill-mode)   ;; turn auto fill mode off
 
 
+(defun set-acl2-background-color (color)
+  (setq acl2-shell-background-color color)
+  ;; In case there's a current buffer, go install the color there too.
+  (when (get-buffer *acl2-shell*)
+    (let ((curr (current-buffer)))
+      (switch-to-buffer *acl2-shell*)
+      (set-buffer-background-color acl2-shell-background-color)
+      (switch-to-buffer curr))))
+
 (defun pretty ()
   (interactive)
-  (set-background-color "#000049")
+  (set-background-color "#000050")
+  (set-acl2-background-color "#201049")
   (set-foreground-color "white")
   (set-cursor-color "yellow")
   (set-face-foreground 'font-lock-comment-face "LightSkyBlue2")
@@ -430,6 +440,7 @@
 (defun dark ()
   (interactive)
   (set-background-color "#000000")
+  (set-acl2-background-color "#200020")
   (set-foreground-color "#ffffff")
   (set-cursor-color "#ffff00")
   (set-face-foreground 'font-lock-comment-face "#b0efff")
@@ -445,7 +456,8 @@
 
 (defun light ()
   (interactive)
-  (set-background-color "grey98")
+  (set-background-color "#f6f6f6")
+  (set-acl2-background-color "#f6f6e6")
   (set-foreground-color "black")
   (set-cursor-color "DarkRed")
   (set-face-foreground 'font-lock-comment-face "DarkBlue")
@@ -459,10 +471,10 @@
     ["black" "red" "#009000" "yellow" "#000090" "magenta" "cyan" "white"])
   (setq ansi-color-map (ansi-color-make-color-map)))
 
-
 (defun pretty2 ()
   (interactive)
   (set-background-color "light yellow")
+  (set-acl2-background-color "#f0fff0")
   (set-foreground-color "DarkGreen")
   (set-cursor-color "DarkRed")
   (set-face-foreground 'font-lock-comment-face "DarkBlue")
@@ -476,10 +488,10 @@
     ["black" "red" "#009000" "#907000" "#000090" "magenta" "cyan" "white"])
   (setq ansi-color-map (ansi-color-make-color-map)))
 
-
 (defun server ()
   (interactive)
   (set-background-color "#003000")
+  (set-acl2-background-color "#003030")
   (set-foreground-color "#ffffff")
   (set-cursor-color "#f0f0a0")
   (set-face-foreground 'font-lock-comment-face "#c0d0c0")
