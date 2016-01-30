@@ -66,7 +66,8 @@
       (switch-to-buffer
        (make-comint bufname (or (getenv "SHELL")
 				"bash")))
-      (shell-mode))))
+      (shell-mode)
+      (set-syntax-table lisp-mode-syntax-table))))
 
 ; Avoid killing shell buffers by accident:
 (defun kill-buffer-without-process (name)
