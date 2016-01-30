@@ -43,7 +43,6 @@
 (ansi-color-for-comint-mode-on)
 (font-lock-mode 0)
 
-
 ; Do meta-x new-shell to start a new shell.
 (defvar number-of-other-sshs 0)
 (defvar ssh-target "hpc0")
@@ -96,11 +95,31 @@
 (defvar *acl2-shell* "*shell*")
 
 ; Set the ACL2 shell to the current buffer.
+(defvar acl2-shell-background-color
+  ;; This will control the color of the "C-t c" ACL2 shell buffer.
+  ;; Get the initial color from Emacs' background.
+  (cdr (assoc 'background-color (frame-parameters))))
+
+(defun set-buffer-background-color (color)
+  ;; Magic code based on http://lists.gnu.org/archive/html/emacs-devel/2013-06/msg00504.html
+  (interactive (list (read-color)))
+  (make-local-variable 'face-remapping-alist)
+  (push `(default (:background ,color)) face-remapping-alist))
+
 (define-key ctl-t-keymap "c" 'set-shell-buffer)
 (defun set-shell-buffer ()
   (interactive)
+  ;; Jared's hack: if there is an old acl2-shell, we need to uninstall its background color
+  (when (get-buffer *acl2-shell*)
+    ;; There is an old ACL2 shell, so sneak over there and reset its old
+    ;; background color.
+    (let ((curr (current-buffer)))
+      (switch-to-buffer *acl2-shell*)
+      (set-buffer-background-color (cdr (assoc 'background-color (frame-parameters))))
+      (switch-to-buffer curr)))
+  ;; Switch the shell to this buffer.
+  (set-buffer-background-color acl2-shell-background-color)
   (setq *acl2-shell* (buffer-name (current-buffer))))
-
 
 (defun set-local-shell-buffer ()
   (interactive)

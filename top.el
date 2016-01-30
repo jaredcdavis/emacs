@@ -43,6 +43,7 @@
 (add-to-list 'completion-ignored-extensions ".acl2x")
 (add-to-list 'completion-ignored-extensions ".mpcert")
 
+
 (autoload 'ruby-mode "ruby-mode" "Major mode for editing ruby scripts." t)
 (setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
 (setq interpreter-mode-alist (append '(("ruby" . ruby-mode)) interpreter-mode-alist))
@@ -455,3 +456,13 @@ This works on the current region."
                                       front-sticky
                                       inhibit-line-move-field-capture
                                       rear-nonsticky))))
+
+
+(require 'log-edit)
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG" . log-edit-mode))
+(add-hook 'log-edit-mode-hook
+	  (lambda ()
+	    (setq fill-column 70)
+	    ;; bozo this doesn't seem to be working...
+	    (flyspell-mode 1)))
+
