@@ -13,14 +13,10 @@
 
 (add-to-list 'load-path "emacs")
 
-(when *at-centaur*
-  (load "~/emacs/ssh.el"))
-
+(load "~/emacs/emacs-acl2.elc")
+(load "~/emacs/jared.elc")
 ;(load "~/emacs/haml-mode.el")
-(load "~/emacs/emacs-acl2.el")
-(load "~/emacs/jared.el")
-
-(load "~/verilog-mode/verilog-mode.el")
+;(load "~/emacs/verilog-mode.el")
 ;(load "~/emacs/nasm-mode.el")
 ;(load "~/emacs/scss-mode.el")
 
@@ -338,9 +334,9 @@ This works on the current region."
 
 (show-paren-mode 1)
 (setq show-paren-style 'parenthesis)
-(set-face-background 'show-paren-match-face "#60ffff")
-(set-face-foreground 'show-paren-match-face (face-foreground 'default))
-(set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
+;(set-face-background 'show-paren-match-face "#60ffff")
+;(set-face-foreground 'show-paren-match-face (face-foreground 'default))
+;(set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
 ;(setq show-paren-delay 0)
 
 
@@ -421,26 +417,24 @@ This works on the current region."
 
 (delete-selection-mode 1)
 
-(unless (string-equal system-type "windows-nt")
+(when (and (not (string-equal system-type "darwin"))
+	   (not (string-equal system-type "windows-nt")))
+  ;; Try to make copy/paste work on Linux
   (setq x-select-enable-primary t)
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
-(defun find-first-non-ascii-char ()
-  "Find the first non-ascii character from point onwards."
-  (interactive)
-  (let (point)
-    (save-excursion
-      (setq point
-            (catch 'non-ascii
-              (while (not (eobp))
-                (or (eq (char-charset (following-char))
-                        'ascii)
-                    (throw 'non-ascii (point)))
-                (forward-char 1)))))
-    (if point
-        (goto-char point)
-        (message "No non-ascii characters."))))
+(when (string-equal system-type "darwin")
+  ;; Magic code to make the command key be the meta key, since
+  ;; otherwise switching between a mac and a PC is horrible.
+  (setq mac-option-key-is-meta nil)
+  (setq mac-command-key-is-meta t)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier nil)
+  ;; Make home and end work correctly instead of taking you to the start/end of the buffer.
+  (global-set-key (kbd "<home>") 'beginning-of-line)
+  (global-set-key (kbd "<end>") 'end-of-line)
+  )
 
 
 (defun fix-copypaste-badness ()
@@ -467,3 +461,5 @@ This works on the current region."
 	    ;; bozo this doesn't seem to be working...
 	    (flyspell-mode 1)))
 
+
+(put 'erase-buffer 'disabled nil)

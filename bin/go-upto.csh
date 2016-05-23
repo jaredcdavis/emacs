@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# NOTE: there is an alternative for sh/bash/zsh, see go-upto (with no .csh suffix)
+#
 # Usage:
 #  Add the folloiwng to .cshrc:
 #

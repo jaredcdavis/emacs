@@ -20,7 +20,6 @@ An example:
 (defvar *acl2-sources-dir* "~/acl2/")
 (load "~/acl2/books/xdoc/xdoc.el")
 
-(defvar *at-centaur* nil) ;; should be NIL unless I'm at Centaur
 (load "~/emacs/top.el")
 
 (ignore-errors (visit-tags-table "~/acl2/TAGS"))

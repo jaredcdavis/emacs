@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# NOTE: there is an alternative for csh, see see go-upto.csh
+#
 # Usage:
 #  Add the folloiwng to .bashrc:
 #

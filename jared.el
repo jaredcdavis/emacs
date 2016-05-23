@@ -26,13 +26,14 @@
 ;; C-x h, but my fingers are lazy and I was constantly typing the wrong command
 ;; until I added this.  Now you can use either.
 
-(defun wipe-buffer ()
-  (interactive)
-  (mark-whole-buffer)
-  (delete-active-region))
+;; (defun wipe-buffer ()
+;;   (interactive)
+;;   (mark-whole-buffer)
+;;   (delete-active-region))
 
+					;(global-set-key [(control x) (control h)] 'mark-whole-buffer)
 (global-set-key [(control x) (control h)] 'mark-whole-buffer)
-(global-set-key [(control a)] 'wipe-buffer)
+(global-set-key [(control a)] 'erase-buffer)
 
 
 ;; I hate when I'm trying to hit C-x k, but hit C-x C-k instead.  So, I rebind
@@ -104,7 +105,7 @@
   (interactive)
   (let ((place (point))
 	(ret   ""))
-    (previous-line)
+    (forward-line -1)
     (beginning-of-line)
     (let ((here (point)))
       (when (equal (buffer-substring here (+ 2 here)) "#!")
@@ -126,11 +127,11 @@
 ;;       (setq defun-str (buffer-substring beg (point))))
 ;;     (other-window 1)
 ;;     (switch-to-buffer *acl2-shell*)
-;;     (end-of-buffer)
+;;     ((goto-char (point-max)))
 ;;     (insert pkg-str)
 ;;     (insert defun-str)
 ;;     (other-window 0)
-;;     (end-of-buffer))
+;;     ((goto-char (point-max))))
 ;;   (setq my-control-tab-direction -1))
 
 
@@ -141,9 +142,9 @@
 	(shell *acl2-shell*))
     (other-window 1)
     (switch-to-buffer shell)
-    (end-of-buffer)
+    (goto-char (point-max))
     (insert str)
-    (end-of-buffer))
+    (goto-char (point-max)))
   (setq my-control-tab-direction -1))
 
 
@@ -556,7 +557,7 @@
       (goto-char min)
       (while (<= (point) max)
 	(indent-according-to-mode)
-	(next-line 1)
+	(forward-line 1)
 	(end-of-line)))))
 
 (if (equal window-system 'x)
@@ -627,12 +628,21 @@
   (let ((place (point))
         (start)
         (end))
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (setq start (point))
-    (end-of-buffer)
+    (goto-char (point-max))
     (setq end (point))
     (ansi-color-apply-on-region start end)
     (goto-char place)))
 
 
 
+(defun remove-newlines-in-region ()
+  "Removes all newlines in the region."
+  (interactive)
+  (save-restriction
+    (narrow-to-region (point) (mark))
+    (goto-char (point-min))
+    (while (search-forward "\n" nil t) (replace-match " " nil t))))
+
+;(global-set-key [f8] 'remove-newlines-in-region)

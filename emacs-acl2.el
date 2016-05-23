@@ -1,6 +1,8 @@
 ;; Originally distributed with ACL2.
 ;; Modified by Jared Davis
 
+(defvar *acl2-sources-dir* "~/acl2/")
+
 ; Attempt to set *acl2-sources-dir*.
 (if (and (not (boundp '*acl2-sources-dir*))
 	 (file-name-absolute-p load-file-name))
@@ -17,7 +19,7 @@
 ;;; Control-t keymap
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(when (not (boundp 'ctl-t-keymap))
+;(when (not (boundp 'ctl-t-keymap))
 
 ; This trick probably came from Bob Boyer, to define a new keymap; so now
 ; control-t is the first character of a complex command.
@@ -28,7 +30,7 @@
 ; Control-t t now transposes characters, instead of the former control-t.
   (define-key ctl-t-keymap "\C-T" 'transpose-chars)
   (define-key ctl-t-keymap "\C-t" 'transpose-chars)
-  )
+;  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; General shell stuff
@@ -36,9 +38,7 @@
 
 ; Start up a shell.  This also loads in comint-mode, used below.
 
-(if *at-centaur*
-    (ssh "hpc0" "*shell*")
-  (shell))
+(shell)
 
 (ansi-color-for-comint-mode-on)
 (font-lock-mode 0)
@@ -50,14 +50,14 @@
 (defun new-shell ()
   "Start up another shell."
   (interactive)
-  (if *at-centaur*
-      (let ((bufname (concat "*shell-"
-			     (number-to-string
-			      (setq number-of-other-sshs
-				    (+ 1 number-of-other-sshs)))
-			     "*")))
-	(ssh ssh-target bufname)
-	(font-lock-mode 0))
+  ;; (if *at-centaur*
+  ;;     (let ((bufname (concat "*shell-"
+  ;; 			     (number-to-string
+  ;; 			      (setq number-of-other-sshs
+  ;; 				    (+ 1 number-of-other-sshs)))
+  ;; 			     "*")))
+  ;; 	(ssh ssh-target bufname)
+  ;; 	(font-lock-mode 0))
     (let ((bufname (concat "shell-"
 			   (number-to-string
 			    (setq number-of-other-sshs
@@ -66,7 +66,7 @@
        (make-comint bufname (or (getenv "SHELL")
 				"bash")))
       (shell-mode)
-      (set-syntax-table lisp-mode-syntax-table))))
+      (set-syntax-table lisp-mode-syntax-table)))
 
 ; Avoid killing shell buffers by accident:
 (defun kill-buffer-without-process (name)
@@ -211,10 +211,10 @@
 ;;       (setq str (buffer-substring beg (point))))
 ;;     (other-window 1)
 ;;     (switch-to-buffer *acl2-shell*)
-;;     (end-of-buffer)
+;;     (goto-char (point-max))
 ;;     (insert str)
 ;;     (other-window 0)
-;;     (end-of-buffer)))
+;;     (goto-char (point-max))))
 
 ;; (defun enter-theorem ()
 ;;   (interactive)
@@ -226,13 +226,13 @@
 ;;       (forward-sexp)
 ;;       (setq str (buffer-substring beg (point))))
 ;;     (set-buffer *acl2-shell*)
-;;     (end-of-buffer)
+;;     (goto-char (point-max))
 ;;     (insert str))
 ;;   (switch-to-buffer *acl2-shell*)
 ;;   ;; The rest seemed necessary in some older emacs version, when set-buffer
 ;;   ;; above was instead switch-to-buffer and the above switch-to-buffer was
 ;;   ;; omitted, but this no longer seems necessary.
-;;   ;;(end-of-buffer)
+;;   ;;(goto-char (point-max))
 ;;   )
 
 ; Avoid killing process with control-d in shell buffer:
@@ -290,7 +290,7 @@
     (write-region-for-shell beg end)
     (other-window 1)
     (switch-to-buffer shell)
-    (end-of-buffer)
+    (goto-char (point-max))
     (insert message)))
 
 (defun acl2-load ()
@@ -619,7 +619,7 @@ command for the proof-checker.  Causes an error if one is already
 at the top."
   (interactive)
   (let ((addr (find-address)))
-    (end-of-buffer)
+    (goto-char (point-max))
     (if (null addr)
 	(error "Null address.")
       (insert (prin1-to-string (cons 'dive addr))))))
@@ -632,7 +632,7 @@ moves to the end of the buffer and plops down the appropriate DV
 command for the proof-checker. Causes an error if one is already at the top."
   (interactive)
   (let ((addr (find-address)))
-    (end-of-buffer)
+    (goto-char (point-max))
     (if (null addr)
 	(error "Null address.")
       (insert (prin1-to-string (cons 'dv addr))))))
@@ -691,8 +691,8 @@ of the current s-expression in the enclosing list"
   (interactive)
   (info (concat (acl2-sources-dir) "doc/EMACS/acl2-doc-emacs.info")))
 
-(setq display-time-interval 10)
-(display-time) ; turn off with (display-time-mode)
+;(setq display-time-interval 10)
+;(display-time) ; turn off with (display-time-mode)
 
 ; Disable commands that we do not want to execute by mistake:
 (put 'shell-resync-dirs 'disabled t)
