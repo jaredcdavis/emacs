@@ -16,12 +16,13 @@
 (when *at-centaur*
   (load "~/emacs/ssh.el"))
 
-(load "~/emacs/haml-mode.el")
+;(load "~/emacs/haml-mode.el")
 (load "~/emacs/emacs-acl2.el")
 (load "~/emacs/jared.el")
-(load "~/emacs/verilog-mode.el")
-(load "~/emacs/nasm-mode.el")
-(load "~/emacs/scss-mode.el")
+
+(load "~/verilog-mode/verilog-mode.el")
+;(load "~/emacs/nasm-mode.el")
+;(load "~/emacs/scss-mode.el")
 
 (setq verilog-auto-endcomments    nil)
 (setq verilog-indent-level        2)
