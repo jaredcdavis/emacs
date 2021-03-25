@@ -463,3 +463,7 @@ This works on the current region."
 
 
 (put 'erase-buffer 'disabled nil)
+
+(defun rvt ()
+  (interactive)
+  (revert-buffer))
